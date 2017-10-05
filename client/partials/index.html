@@ -1,3 +1,11 @@
-<h1>index partial</h1>
-<button type="button" ng-click="sampleRoute()">Sample Route Test</button>
-<p>Check Console</p>
+<textarea ng-model="printScreen.text"></textarea>
+<button type="button" ng-click="generateCSS()">Generate CSS</button>
+<div class="imageSplitterForm">
+    <form ng-submit="splitImage()">
+        <label>Width</label><input type="string" ng-model="imageRef.width"><br>
+        <label>Height</label><input type="string" ng-model="imageRef.height"><br>
+        <label>Cell Width</label><input type="string" ng-model="imageRef.cellWidth"><br>
+        <label>Cell Height</label><input type="string" ng-model="imageRef.cellHeight"><br>
+        <button type="submit">Split Image</button>
+    </form>
+</div>
