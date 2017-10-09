@@ -51,53 +51,89 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         };
         spliceImage(400, 400, 40, 40);
     };
-    $scope.imageRef = {};
-    $scope.splitImage = function(){
+    $scope.imageRef = {
+        "width": "258",
+        "height": "20834",
+        "cellWidth": "32",
+        "cellHeight": "32"
+    };
+    $scope.tileSet = [];
+    $scope.tileColumns = 1;
+    $scope.tileColumnsReady = false;
+    $scope.splitImage = function () {
         console.log("Splitting");
-        if(!$scope.imageRef.width || typeof Number($scope.imageRef.width) == "NaN"){
+        if (!$scope.imageRef.width || typeof Number($scope.imageRef.width) == "NaN") {
             return console.log("Invalid Width Input");
-        } else if (!$scope.imageRef.height || typeof Number($scope.imageRef.height) == "NaN"){
+        } else if (!$scope.imageRef.height || typeof Number($scope.imageRef.height) == "NaN") {
             return console.log("Invalid Height Input");
-        } else if (!$scope.imageRef.cellWidth || typeof Number($scope.imageRef.cellWidth) == "NaN"){
+        } else if (!$scope.imageRef.cellWidth || typeof Number($scope.imageRef.cellWidth) == "NaN") {
             return console.log("Invalid Cell Width Input")
-        } else if (!$scope.imageRef.cellHeight || typeof Number($scope.imageRef.cellHeight) == "NaN"){
+        } else if (!$scope.imageRef.cellHeight || typeof Number($scope.imageRef.cellHeight) == "NaN") {
             return console.log("Invalid Cell Height Input");
         } else {
             var width = Number($scope.imageRef.width),
                 height = Number($scope.imageRef.height),
                 cellHeight = Number($scope.imageRef.cellHeight),
                 cellWidth = Number($scope.imageRef.cellWidth),
-                cellColumns = Math.floor(width/cellWidth),
-                cellRows = Math.floor(height/cellHeight);
+                cellColumns = Math.floor(width/ cellWidth),
+                cellRows = Math.floor(height / cellHeight);
+            $scope.tileColumns = cellColumns;
+            $scope.tileColumnsReady = true;
             console.log(cellColumns);
             console.log(cellRows);
             var cellNames = [];
             var rowNames = [];
             var columnNames = [];
             var cssArr = [];
-            for(var i = 0; i < cellColumns; i++){
-                var columnName = i * (cellWidth);
-                columnNames.push(columnName);
-                for(var k = 0; k < cellRows; k++){
-                    if(i == 0){
-                        var rowName = k * (cellHeight);
-                        rowNames.push(rowName);
-                    }
-                    var cssString = 
+            for (var i = 0; i < cellRows; i++) {
+                var rowName = (i * cellHeight) + 1;
+                for (var k = 0; k < cellColumns; k++) {
+                    var columnName  = (k * cellWidth) + 1;
+                    var backgroundPosition = `-${columnName}px -${rowName}px`;
+                    var cssString =
 `
-.tile-C${columnName}-R${rowName} {
-    background: url(./../pics/tileset.png=);
-    background-position: -${columnName}px -${rowName}px;
+.tile-R${rowName}-C${columnName} {
+    background: url(/assets/pics/tileset5.png);
+    background-position: ${backgroundPosition};
     width: ${cellWidth}px;
     height: ${cellHeight}px;
 }
 `
                     cssArr.push(cssString);
+                    var classString = `tile-R${rowName}-C${columnName}`
+                    $scope.tileSet.push(classString);
                 }
             };
-            console.log(cssArr.length);;
-            $scope.printScreen.text = cssArr.join(" ");
-            
+            var cssText = cssArr.join(" ");
+            $scope.printScreen.text = cssText;
+            console.log("cssText");
+            console.log(cssText);
+            console.log("Tile Set");
+            console.log($scope.tileSet);
         }
+    };
+    $scope.print = function(text){
+        console.log(text);
+    };
+    $scope.testMap = function(){
+        console.log(maps[0][0].map);
+    };
+    $scope.currentMap = [];
+    var currentMap = maps[0][0].map;
+    $scope.displayWorld = function(){
+        for(var i = 0; i < currentMap.length; i++){
+            for(var k = 0; k < currentMap[i].length; k++){
+                $scope.currentMap.push(currentMap[i][k]);
+            }
+        }
+    };
+    $scope.copyClass = "";
+    $scope.copyTile = function(tile){
+        $scope.copyClass = tile;
+    };
+    $scope.pasteTile = function(idx){
+        console.log(idx);
+        $scope.currentMap[idx] = $scope.copyClass;
+        console.log($scope.currentMap);
     };
 });

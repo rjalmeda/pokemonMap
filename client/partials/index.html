@@ -2,10 +2,26 @@
 <button type="button" ng-click="generateCSS()">Generate CSS</button>
 <div class="imageSplitterForm">
     <form ng-submit="splitImage()">
-        <label>Width</label><input type="string" ng-model="imageRef.width"><br>
-        <label>Height</label><input type="string" ng-model="imageRef.height"><br>
-        <label>Cell Width</label><input type="string" ng-model="imageRef.cellWidth"><br>
-        <label>Cell Height</label><input type="string" ng-model="imageRef.cellHeight"><br>
+        <label>Width</label><input type="string" ng-model="imageRef.width" placeholder="258"><br>
+        <label>Height</label><input type="string" ng-model="imageRef.height" placeholder="20834"><br>
+        <label>Cell Width</label><input type="string" ng-model="imageRef.cellWidth" placeholder="32"><br>
+        <label>Cell Height</label><input type="string" ng-model="imageRef.cellHeight" placeholder="32"><br>
         <button type="submit">Split Image</button>
     </form>
 </div>
+<button type="button" ng-click="testMap()">test map</button>
+<button type="button" ng-click="displayWorld()">Display World</button>
+
+<div class="gridContainer">
+    <div ng-if="tileColumnsReady">
+        <div class="tileSetSheet" style="grid-template-columns: repeat({{tileColumns}}, 32px); height: 100vh; overflow: scroll;">
+            <div ng-repeat="tile in tileSet" class="{{tile}} tileItem" ng-click="copyTile(tile)"></div>
+        </div>
+    </div>
+    <div id="renderMap">
+        <div ng-repeat="mapTile in currentMap track by $index" class="{{mapTile}} tileItem" ng-click="pasteTile($index)"></div>
+    </div>
+</div>
+
+
+<script src="./../assets/maps/maps.json"></script>
