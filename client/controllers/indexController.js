@@ -119,6 +119,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         console.log(maps[0][0].map);
     };
     $scope.currentMap = [];
+    $scope.currentBG = [];
     var currentMap = maps[0][0].map;
     $scope.displayWorld = function(){
         for(var i = 0; i < currentMap.length; i++){
@@ -131,9 +132,22 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.copyTile = function(tile){
         $scope.copyClass = tile;
     };
+    $scope.toggleTile = "FG";
+    $scope.toggleFGBG = function(){
+        if ($scope.toggleTile == "FG"){
+            $scope.toggleTile = "BG";
+        } else {
+            $scope.toggleTile = "FG";
+        };
+    };
     $scope.pasteTile = function(idx){
-        console.log(idx);
-        $scope.currentMap[idx] = $scope.copyClass;
-        console.log($scope.currentMap);
+        if($scope.toggleTile == "FG"){
+            $scope.currentMap[idx][1] = $scope.copyClass;
+            console.log($scope.currentMap);
+        } else if ($scope.toggleTile == "BG"){
+            $scope.currentMap[idx][0] = $scope.copyClass;
+            console.log($scope.currentMap);
+        };
+        
     };
 });
