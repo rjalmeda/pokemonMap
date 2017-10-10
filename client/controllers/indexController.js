@@ -79,8 +79,8 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
                 cellRows = Math.floor(height / cellHeight);
             $scope.tileColumns = cellColumns;
             $scope.tileColumnsReady = true;
-            console.log(cellColumns);
-            console.log(cellRows);
+//            console.log(cellColumns);
+//            console.log(cellRows);
             var cellNames = [];
             var rowNames = [];
             var columnNames = [];
@@ -106,12 +106,13 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
             };
             var cssText = cssArr.join(" ");
             $scope.printScreen.text = cssText;
-            console.log("cssText");
-            console.log(cssText);
-            console.log("Tile Set");
-            console.log($scope.tileSet);
+//            console.log("cssText");
+//            console.log(cssText);
+//            console.log("Tile Set");
+//            console.log($scope.tileSet);
         }
     };
+    $scope.splitImage();
     $scope.print = function(text){
         console.log(text);
     };
@@ -128,6 +129,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
             }
         }
     };
+    $scope.displayWorld();
     $scope.copyClass = "";
     $scope.copyTile = function(tile){
         $scope.copyClass = tile;
@@ -143,11 +145,49 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.pasteTile = function(idx){
         if($scope.toggleTile == "FG"){
             $scope.currentMap[idx][1] = $scope.copyClass;
-            console.log($scope.currentMap);
+//            console.log($scope.currentMap);
         } else if ($scope.toggleTile == "BG"){
             $scope.currentMap[idx][0] = $scope.copyClass;
-            console.log($scope.currentMap);
+//            console.log($scope.currentMap);
         };
-        
+    };
+    $scope.compileMap = function(){
+        var mapTemp = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+        var unsortedMap = [];
+        for (var i = 0; i < $scope.currentMap.length; i++){
+            unsortedMap.push($scope.currentMap[i]);
+        };
+        unsortedMap.reverse();
+        for (var i = 0; i < 15; i++){
+            for( var k = 0; k < 20; k++){
+                mapTemp[i][k] = unsortedMap.pop();
+            }
+        };
+        console.log(mapTemp);
     };
 });
+
+//sample world object:
+//var sampleRegion = 
+//    {
+//        region: "Kanto",
+//        worldMap: [
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            []
+//        ],
+//        worldMusic: ""
+//    }
