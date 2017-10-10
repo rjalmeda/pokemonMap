@@ -1,7 +1,6 @@
 
 <div class="gridContainer">
     <div class="mapTools">
-<!--
         <textarea ng-model="printScreen.text"></textarea>
         <div class="imageSplitterForm">
             <form ng-submit="splitImage()">
@@ -12,7 +11,6 @@
                 <button type="submit">Split Image</button><button type="button" ng-click="displayWorld()">Display World</button>
             </form>
         </div>
--->
         
     </div>
     <div class="subControls">
@@ -26,10 +24,20 @@
     <div id="renderMap">
         <div ng-repeat="mapTile in currentMap track by $index" class="tileItem" ng-click="pasteTile($index)">
             <div class="tileBG tileItem {{mapTile[0]}}"></div>
-            <div class="tileFG tileItem {{mapTile[1]}}"></div>
+            <div class="tileFG tileItem {{mapTile[1]}}">
+                <p ng-if="mapTile[3] == 'U'">U</p>
+            </div>
         </div>
-        <button type="button" ng-click="toggleFGBG()">{{toggleTile}}</button>
-        <button type="button" ng-click="compileMap()">Compile Map</button>
+        <div>
+            <button type="button" ng-click="toggleFGBG()">{{toggleTile}}</button>
+            <button type="button" ng-click="compileMap()">Compile</button>
+            <button type="button" ng-click="copyPassable()">Passable</button>
+            <button type="button" ng-click="copyUnpassable()">Unpassable</button>
+            <button type="button" ng-click="eraseClass()">Erase</button>
+            <button ng-click="undoMap()">Undo</button>
+            <button ng-click="redoMap()">Redo</button>
+            <button ng-click="bucketMap()">Bucket</button>
+        </div>
     </div>
 </div>
 
