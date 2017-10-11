@@ -12,6 +12,7 @@
                 <button type="submit">Split Image</button><button type="button" ng-click="displayWorld()">Display World</button>
             </form>
 -->
+            <label>Map Name: </label><input type="text" ng-model="currentMap.name"><br>
             <label>Map X: </label><input type="number" ng-model="currentMap.x" ng-change="fetchMap()"><br>
             <label>Map Y: </label><input type="number" ng-model="currentMap.y" ng-change="fetchMap()"><br>
             <label>Map Coordinates: </label><input type="string" ng-model="currentMap.mapCoordinates" disabled><br>
@@ -31,7 +32,8 @@
     <div id="renderMap">
         <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
             <div class="tileBG tileItem {{mapTile[0]}}"></div>
-            <div class="tileFG tileItem {{mapTile[1]}}">
+            <div class="tileMG tileItem {{mapTile[1]}}"></div>
+            <div class="tileFG tileItem {{mapTile[2]}}">
                 <p><span ng-if="mapTile[3] == 'U'">U</span><span ng-if="mapTile[2] =='D'">D</span></p>
         
             </div>
@@ -47,11 +49,12 @@
                 <button ng-click="undoMap()">Undo</button>
                 <button ng-click="redoMap()">Redo</button>
                 <button ng-click="bucketMap()">Bucket</button>
+                <button ng-click="showCurrentMap()">Show Map</button>
             </div>
             <div>
                 <label>Hex Map Color</label>
-                <input type="text" ng-model="hexColor" ng-change="updateColor()">
-                <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{hexColor}};"></div>
+                <input type="text" ng-model="currentMap.mapColor">
+                <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{currentMap.mapColor}};"></div>
             </div>
         </div>
     </div>

@@ -123,10 +123,12 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     };
     $scope.toggleTile = "FG";
     $scope.toggleFGBG = function(){
-        if ($scope.toggleTile == "FG"){
-            $scope.toggleTile = "BG";
-        } else {
+        if ($scope.toggleTile == "BG"){
+            $scope.toggleTile = "MG";
+        } else if ($scope.toggleTile == "MG"){
             $scope.toggleTile = "FG";
+        } else {
+            $scope.toggleTile = "BG"
         };
     };
     $scope.pasteTile = function(idx){
@@ -137,15 +139,15 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         } else if ($scope.copyClass == "U"){
             $scope.rawMap[idx][3] = "U"
         } else if ($scope.copyClass == "D" && $scope.rawMap[idx][2] == "D"){
-            $scope.rawMap[idx][2] = ""
+            $scope.rawMap[idx][4] = ""
         } else if ($scope.copyClass == "D"){
-            $scope.rawMap[idx][2] = "D"
-        }else if($scope.toggleTile == "FG"){
+            $scope.rawMap[idx][4] = "D"
+        } else if ($scope.toggleTile == "FG"){
+            $scope.rawMap[idx][2] = $scope.copyClass;
+        } else if ($scope.toggleTile == "MG"){
             $scope.rawMap[idx][1] = $scope.copyClass;
-//            console.log($scope.currentMap);
         } else if ($scope.toggleTile == "BG"){
             $scope.rawMap[idx][0] = $scope.copyClass;
-//            console.log($scope.currentMap);
         };
         $scope.clearRedo();
         console.log($scope.currentMap);
@@ -225,11 +227,15 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
             }
         } else if ($scope.toggleTile == "FG"){
             for(var i = 0; i < $scope.rawMap.length; i++){
-                $scope.rawMap[i][1] = $scope.copyClass;
+                $scope.rawMap[i][2] = $scope.copyClass;
             }
         } else if ($scope.toggleTile == "BG"){
             for(var i = 0; i < $scope.rawMap.length; i++){
                 $scope.rawMap[i][0] = $scope.copyClass;
+            }
+        } else if ($scope.toggleTile == "MG"){
+            for(var i = 0; i < $scope.rawMap.length; i++){
+                $scope.rawMap[i][1] = $scope.copyClass;
             }
         }
     };
@@ -258,14 +264,17 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     };
     $scope.fetchMap = function(){
         $scope.updateCoordinates(function(){
-            console.log("Fetching");
+//            console.log("Fetching");
             indexFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
-                console.log(data);
+//                console.log(data);
                 $scope.currentMap = data;
                 $scope.rawMap = data.map.raw;
             })
         });
-    }
+    };
+    $scope.showCurrentMap = function(){
+        console.log($scope.currentMap);
+    };
     $scope.fetchMap();
 });
 

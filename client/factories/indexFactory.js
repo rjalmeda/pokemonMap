@@ -71,14 +71,14 @@ app.factory('indexFactory', function($http){
     
     factory.fetchMap = function(mapCoord, callback){
         $http.get('/fetchMap/' + mapCoord).then(function(data){
-            console.log(data);
+//            console.log(data);
             if (data.data.errors){
                 callback(data.data.errors)
             } else if (data.data.map){
-                console.log("found existing map");
+//                console.log("found existing map");
                 callback(data.data.map);
             } else if (!data.data.map){
-                console.log("generating new map");
+//                console.log("generating new map");
                 var coordinates = mapCoord.split(",");
                 var newMap = new PokeMap(Number(coordinates[0]), Number(coordinates[1]));
                 callback(newMap);
