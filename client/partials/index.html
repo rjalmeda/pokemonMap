@@ -1,8 +1,9 @@
 
 <div class="gridContainer">
     <div class="mapTools">
-        <textarea ng-model="printScreen.text"></textarea>
+<!--        <textarea ng-model="printScreen.text"></textarea>-->
         <div class="imageSplitterForm">
+<!--
             <form ng-submit="splitImage()">
                 <label>Width</label><input type="string" ng-model="imageRef.width" placeholder="258"><br>
                 <label>Height</label><input type="string" ng-model="imageRef.height" placeholder="20834"><br>
@@ -10,6 +11,12 @@
                 <label>Cell Height</label><input type="string" ng-model="imageRef.cellHeight" placeholder="32"><br>
                 <button type="submit">Split Image</button><button type="button" ng-click="displayWorld()">Display World</button>
             </form>
+-->
+            <label>Map X: </label><input type="number" ng-model="currentMap.x" ng-change="fetchMap()"><br>
+            <label>Map Y: </label><input type="number" ng-model="currentMap.y" ng-change="fetchMap()"><br>
+            <label>Map Coordinates: </label><input type="string" ng-model="currentMap.mapCoordinates" disabled><br>
+            <button type="button" ng-click="saveMap()">Save Map</button>
+            <button type="button" ng-click="saveWorld()">Save World</button>
         </div>
         
     </div>
@@ -22,10 +29,11 @@
         </div>
     </div>
     <div id="renderMap">
-        <div ng-repeat="mapTile in currentMap track by $index" class="tileItem" ng-click="pasteTile($index)">
+        <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
             <div class="tileBG tileItem {{mapTile[0]}}"></div>
             <div class="tileFG tileItem {{mapTile[1]}}">
-                <p ng-if="mapTile[3] == 'U'">U</p>
+                <p><span ng-if="mapTile[3] == 'U'">U</span><span ng-if="mapTile[2] =='D'">D</span></p>
+        
             </div>
         </div>
         <div>
@@ -33,6 +41,7 @@
             <button type="button" ng-click="compileMap()">Compile</button>
             <button type="button" ng-click="copyPassable()">Passable</button>
             <button type="button" ng-click="copyUnpassable()">Unpassable</button>
+            <button type="button" ng-click="copyDoor()">Door</button>
             <button type="button" ng-click="eraseClass()">Erase</button>
             <button ng-click="undoMap()">Undo</button>
             <button ng-click="redoMap()">Redo</button>

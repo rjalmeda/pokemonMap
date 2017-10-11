@@ -1,10 +1,8 @@
 app.controller('indexController', function ($scope, $location, indexFactory) {
-    $scope.sampleRoute = function () {
-        indexFactory.sampleRoute(function (data) {
-            console.log(data);
-        })
-    };
     $scope.printScreen = {};
+    $scope.currentRegion = {
+        name: "kanto"
+    };
     $scope.generateCSS = function () {
         console.log("generating");
         $scope.printScreen.text = "Generating new css";
@@ -118,17 +116,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.testMap = function(){
         console.log(maps[0][0].map);
     };
-    $scope.currentMap = [];
-    $scope.currentBG = [];
-    var currentMap = maps[0][0].map;
-    $scope.displayWorld = function(){
-        for(var i = 0; i < currentMap.length; i++){
-            for(var k = 0; k < currentMap[i].length; k++){
-                $scope.currentMap.push(currentMap[i][k]);
-            }
-        }
-    };
-    $scope.displayWorld();
+    $scope.rawMap = [];
     $scope.copyClass = "";
     $scope.copyTile = function(tile){
         $scope.copyClass = tile;
@@ -145,14 +133,18 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         $scope.backupMap();
         console.log($scope.copyClass);
         if($scope.copyClass == "P"){
-            $scope.currentMap[idx][3] = "P";
+            $scope.rawMap[idx][3] = "P";
         } else if ($scope.copyClass == "U"){
-            $scope.currentMap[idx][3] = "U"
-        } else if($scope.toggleTile == "FG"){
-            $scope.currentMap[idx][1] = $scope.copyClass;
+            $scope.rawMap[idx][3] = "U"
+        } else if ($scope.copyClass == "D" && $scope.rawMap[idx][2] == "D"){
+            $scope.rawMap[idx][2] = ""
+        } else if ($scope.copyClass == "D"){
+            $scope.rawMap[idx][2] = "D"
+        }else if($scope.toggleTile == "FG"){
+            $scope.rawMap[idx][1] = $scope.copyClass;
 //            console.log($scope.currentMap);
         } else if ($scope.toggleTile == "BG"){
-            $scope.currentMap[idx][0] = $scope.copyClass;
+            $scope.rawMap[idx][0] = $scope.copyClass;
 //            console.log($scope.currentMap);
         };
         $scope.clearRedo();
@@ -160,7 +152,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     };
     $scope.compileMap = function(){
         var mapTemp = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
-        var unsortedMap = $scope.currentMap.slice();
+        var unsortedMap = $scope.rawMap.slice();
         unsortedMap.reverse();
         for (var i = 0; i < 15; i++){
             for( var k = 0; k < 20; k++){
@@ -168,18 +160,18 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
             }
         };
         console.log(mapTemp);
+        return mapTemp;
     };
     $scope.copyPassable = function(){
-        $scope.backupMap();
         $scope.copyClass = "P";
-        $scope.clearRedo();
         console.log($scope.copyClass);
     };
     $scope.copyUnpassable = function(){
-        $scope.backupMap();
         $scope.copyClass = "U";
-        $scope.clearRedo();
         console.log($scope.copyClass);
+    };
+    $scope.copyDoor = function(){
+        $scope.copyClass = "D";
     };
     $scope.eraseClass = function(){
         $scope.copyClass = "";
@@ -188,8 +180,8 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.mapRedoHistory = [];
     $scope.backupMap = function(){
         var tempMap = [];
-        for (var i = 0; i < $scope.currentMap.length; i++){
-            var tempData = $scope.currentMap[i].slice();
+        for (var i = 0; i < $scope.rawMap.length; i++){
+            var tempData = $scope.rawMap[i].slice();
             tempMap.push(tempData);
         };
         $scope.mapHistory.push(tempMap);
@@ -200,13 +192,13 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         }
         console.log("undo");
         var tempMap = [];
-        for (var i = 0; i < $scope.currentMap.length; i++){
-            var tempData = $scope.currentMap[i].slice();
+        for (var i = 0; i < $scope.rawMap.length; i++){
+            var tempData = $scope.rawMap[i].slice();
             tempMap.push(tempData);
         };
         $scope.mapRedoHistory.push(tempMap);
         console.log(tempMap);
-        $scope.currentMap = $scope.mapHistory.pop();
+        $scope.rawMap = $scope.mapHistory.pop();
     };
     $scope.redoMap = function(){
         if($scope.mapRedoHistory.length == 0){
@@ -214,7 +206,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         };
         $scope.backupMap();
         console.log($scope.mapRedoHistory);
-        $scope.currentMap = $scope.mapRedoHistory.pop();
+        $scope.rawMap = $scope.mapRedoHistory.pop();
     };
     $scope.clearRedo = function(){
         $scope.mapRedoHistory = [];
@@ -224,23 +216,57 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         $scope.backupMap();
         $scope.clearRedo();
         if($scope.copyClass == "P"){
-            for(var i = 0; i < $scope.currentMap.length; i++){
-                $scope.currentMap[i][3] = "P";
+            for(var i = 0; i < $scope.rawMap.length; i++){
+                $scope.rawMap[i][3] = "P";
             }
         } else if ($scope.copyClass =="U"){
-            for(var i = 0; i < $scope.currentMap.length; i++){
-                $scope.currentMap[i][3] = "U";
+            for(var i = 0; i < $scope.rawMap.length; i++){
+                $scope.rawMap[i][3] = "U";
             }
         } else if ($scope.toggleTile == "FG"){
-            for(var i = 0; i < $scope.currentMap.length; i++){
-                $scope.currentMap[i][1] = $scope.copyClass;
+            for(var i = 0; i < $scope.rawMap.length; i++){
+                $scope.rawMap[i][1] = $scope.copyClass;
             }
         } else if ($scope.toggleTile == "BG"){
-            for(var i = 0; i < $scope.currentMap.length; i++){
-                $scope.currentMap[i][0] = $scope.copyClass;
+            for(var i = 0; i < $scope.rawMap.length; i++){
+                $scope.rawMap[i][0] = $scope.copyClass;
             }
         }
     };
+    
+    $scope.currentMap = {
+        x: 20,
+        y: 20
+    };
+    
+    $scope.saveMap = function(){
+        $scope.currentMap.map.raw = $scope.rawMap;
+        $scope.currentMap.map.compiled = $scope.compileMap();
+        console.log($scope.currentMap);
+        indexFactory.saveMap($scope.currentMap, function(data){
+            console.log(data);
+            $scope.currentMap = data.data.map;
+            $scope.rawMap = $scope.currentMap.map.raw;
+        });
+    };
+    
+    $scope.updateCoordinates = function(callback){
+        $scope.currentMap.mapCoordinates = "" + $scope.currentMap.x + "," + $scope.currentMap.y;
+        if(callback){
+            callback();
+        };
+    };
+    $scope.fetchMap = function(){
+        $scope.updateCoordinates(function(){
+            console.log("Fetching");
+            indexFactory.fetchMap($scope.currentMap.mapCoordinates, function(data){
+                console.log(data);
+                $scope.currentMap = data;
+                $scope.rawMap = data.map.raw;
+            })
+        });
+    }
+    $scope.fetchMap();
 });
 
 //sample world object:

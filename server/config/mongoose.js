@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/MeanTemplate');
+mongoose.connect('mongodb://localhost/pokeMap');
 var path = require('path');
 var fs = require('fs');
 var models_path = path.join(__dirname, './../models');
