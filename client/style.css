@@ -39,6 +39,19 @@
     grid-template-rows: repeat(20, 32px);
 }
 
+#mapControls {
+    display: grid;
+    grid-gap: 0.375em;
+    grid-template-columns: repeat(4,1fr);
+}
+
+.controlContainer {
+    display: grid;
+    margin-top: 0.5em;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 1em;
+}
+
 .gridContainer {
     display: grid;
     grid-template-columns: 2fr 5fr;
