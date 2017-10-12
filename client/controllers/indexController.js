@@ -134,14 +134,18 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.pasteTile = function(idx){
         $scope.backupMap();
         console.log($scope.copyClass);
-        if($scope.copyClass == "P"){
-            $scope.rawMap[idx][3] = "P";
+        if($scope.copyClass == "U" && $scope.rawMap[idx][3] == "U"){
+            $scope.rawMap[idx][3] = "";
         } else if ($scope.copyClass == "U"){
             $scope.rawMap[idx][3] = "U"
-        } else if ($scope.copyClass == "D" && $scope.rawMap[idx][2] == "D"){
+        } else if ($scope.copyClass == "D" && $scope.rawMap[idx][4] == "D"){
             $scope.rawMap[idx][4] = ""
         } else if ($scope.copyClass == "D"){
             $scope.rawMap[idx][4] = "D"
+        } else if ($scope.copyClass == "P" && $scope.rawMap[idx][5] == "P"){
+            $scope.rawMap[idx][5] = ""
+        } else if ($scope.copyClass == "P"){
+            $scope.rawMap[idx][5] = "P"
         } else if ($scope.toggleTile == "FG"){
             $scope.rawMap[idx][2] = $scope.copyClass;
         } else if ($scope.toggleTile == "MG"){
@@ -150,7 +154,6 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
             $scope.rawMap[idx][0] = $scope.copyClass;
         };
         $scope.clearRedo();
-        console.log($scope.currentMap);
     };
     $scope.compileMap = function(){
         var mapTemp = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
@@ -164,7 +167,7 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         console.log(mapTemp);
         return mapTemp;
     };
-    $scope.copyPassable = function(){
+    $scope.copyPath = function(){
         $scope.copyClass = "P";
         console.log($scope.copyClass);
     };
@@ -179,6 +182,9 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         $scope.copyClass = "";
     };
     $scope.mapHistory = [];
+    $scope.clearHistory = function(){
+        $scope.mapHistory = [];
+    };
     $scope.mapRedoHistory = [];
     $scope.backupMap = function(){
         var tempMap = [];
@@ -248,6 +254,10 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
     $scope.saveMap = function(){
         $scope.currentMap.map.raw = $scope.rawMap;
         $scope.currentMap.map.compiled = $scope.compileMap();
+        var PDs = $scope.processPDs();
+        console.log($scope.currentMap);
+        $scope.currentMap.doors = PDs.doors;
+        $scope.currentMap.paths = PDs.paths;
         console.log($scope.currentMap);
         indexFactory.saveMap($scope.currentMap, function(data){
             console.log(data);
@@ -269,6 +279,9 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
 //                console.log(data);
                 $scope.currentMap = data;
                 $scope.rawMap = data.map.raw;
+                $scope.checkPathsDoors();
+                $scope.clearRedo();
+                $scope.clearHistory();
             })
         });
     };
@@ -276,6 +289,70 @@ app.controller('indexController', function ($scope, $location, indexFactory) {
         console.log($scope.currentMap);
     };
     $scope.fetchMap();
+    $scope.doors = [];
+    $scope.paths = [];
+    $scope.checkPathsDoors = function(){
+        let doors = [];
+        let paths = [];
+        for (var i = 0; i < $scope.rawMap.length; i++){
+            if($scope.rawMap[i][4] == "D"){
+                var dataPoint = {
+                    x: (i)%20,
+                    y: Math.floor((i+1)/20)
+                };
+                dataPoint.name = "" + dataPoint.x + "-" + dataPoint.y;
+                if($scope.currentMap.doors && dataPoint.name in $scope.currentMap.doors){
+                    console.log("Found door");
+                    dataPoint = $scope.currentMap.doors[dataPoint.name];
+                };
+                doors.push(dataPoint);
+            };
+            if($scope.rawMap[i][5] == "P"){
+                var dataPoint = {
+                    x: (i)%20,
+                    y: Math.floor((i+1)/20)
+                };
+                dataPoint.name = "" + dataPoint.x + "-" + dataPoint.y;
+                if($scope.currentMap.paths && dataPoint.name in $scope.currentMap.paths){
+                    console.log("Found path");
+                    dataPoint = $scope.currentMap.paths[dataPoint.name];
+                };
+                paths.push(dataPoint);
+            };
+        };
+        
+        $scope.doors = doors;
+        $scope.paths = paths;
+    };
+    $scope.processPDs = function(){
+        var doors = {};
+        var paths = {};
+        for(var i = 0; i < $scope.doors.length; i++){
+            var doorItem = $scope.doors[i];
+            doors[doorItem.name] = {
+                mapX: doorItem.mapX,
+                mapY: doorItem.mapY,
+                playerX: doorItem.playerX,
+                playerY: doorItem.playerY,
+                mapSet: doorItem.mapSet
+            };
+        };
+        for(var i = 0; i < $scope.paths.length; i++){
+            var pathItem = $scope.paths[i];
+            paths[pathItem.name] = {
+                mapX: pathItem.mapX,
+                mapY: pathItem.mapY,
+                playerX: pathItem.playerX,
+                playerY: pathItem.playerY,
+                mapSet: pathItem.mapSet
+            };
+        };
+        var data = {
+            doors: doors,
+            paths: paths
+        }
+        return data;
+    }
 });
 
 //sample world object:

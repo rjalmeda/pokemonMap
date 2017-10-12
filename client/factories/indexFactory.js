@@ -29,8 +29,8 @@ app.factory('indexFactory', function($http){
         };
         this.music = "";
         this.type = "outside";
-        this.doors = [];
-        this.paths = [];
+        this.doors = {};
+        this.paths = {};
         this.pokemon = {
             common: [],
             uncommon: [],

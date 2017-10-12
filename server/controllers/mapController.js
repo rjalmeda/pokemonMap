@@ -12,7 +12,7 @@ module.exports = (function(){
                     console.log("found map");
                     map.set(req.body);
                     map.save(function(err1, updatedMap){
-                        return res.json({map: updatedMap})
+                        return res.json({error: err1, map: updatedMap})
                     })
                 } else if (!map){
                     console.log("making new map");

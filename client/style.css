@@ -77,6 +77,15 @@
     grid-template-rows: 1fr 5fr;
 }
 
+.doorsPaths {
+    padding: 0px;
+    margin-left: 1.5em;
+    margin-top: 1em;
+    height: 80vh;
+    overflow: scroll;
+    font-size: small;
+}
+
 .tile-R1-C1 {
     background: url(/assets/pics/tileset5.png);
     background-position: -1px -1px;
