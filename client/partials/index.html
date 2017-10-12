@@ -29,35 +29,76 @@
             <div ng-repeat="tile in tileSet" class="{{tile}} tileItem" ng-click="copyTile(tile)"></div>
         </div>
     </div>
-    <div id="renderMap">
-        <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
-            <div class="tileBG tileItem {{mapTile[0]}}"></div>
-            <div class="tileMG tileItem {{mapTile[1]}}"></div>
-            <div class="tileFG tileItem {{mapTile[2]}}">
-                <p><span ng-if="mapTile[3] == 'U'">U</span><span ng-if="mapTile[2] =='D'">D</span></p>
-        
-            </div>
+    <div style="display: grid; grid-template-columns: 32px 640px;">
+        <div>
+            <div class="emptyTile"></div>
+            <div class="emptyTile">1</div>
+            <div class="emptyTile">2</div>
+            <div class="emptyTile">3</div>
+            <div class="emptyTile">4</div>
+            <div class="emptyTile">5</div>
+            <div class="emptyTile">6</div>
+            <div class="emptyTile">7</div>
+            <div class="emptyTile">8</div>
+            <div class="emptyTile">9</div>
+            <div class="emptyTile">10</div>
+            <div class="emptyTile">11</div>
+            <div class="emptyTile">12</div>
+            <div class="emptyTile">13</div>
+            <div class="emptyTile">14</div>
+            <div class="emptyTile">15</div>
         </div>
-        <div class="controlContainer">
-            <div id="mapControls">
-                <button type="button" ng-click="toggleFGBG()">{{toggleTile}}</button>
-                <button type="button" ng-click="compileMap()">Compile</button>
-                <button type="button" ng-click="copyPassable()">Passable</button>
-                <button type="button" ng-click="copyUnpassable()">Unpassable</button>
-                <button type="button" ng-click="copyDoor()">Door</button>
-                <button type="button" ng-click="eraseClass()">Erase</button>
-                <button ng-click="undoMap()">Undo</button>
-                <button ng-click="redoMap()">Redo</button>
-                <button ng-click="bucketMap()">Bucket</button>
-                <button ng-click="showCurrentMap()">Show Map</button>
+        <div id="renderMap">
+            <div class="emptyTile">1</div>
+            <div class="emptyTile">2</div>
+            <div class="emptyTile">3</div>
+            <div class="emptyTile">4</div>
+            <div class="emptyTile">5</div>
+            <div class="emptyTile">6</div>
+            <div class="emptyTile">7</div>
+            <div class="emptyTile">8</div>
+            <div class="emptyTile">9</div>
+            <div class="emptyTile">10</div>
+            <div class="emptyTile">11</div>
+            <div class="emptyTile">12</div>
+            <div class="emptyTile">13</div>
+            <div class="emptyTile">14</div>
+            <div class="emptyTile">15</div>
+            <div class="emptyTile">16</div>
+            <div class="emptyTile">17</div>
+            <div class="emptyTile">18</div>
+            <div class="emptyTile">19</div>
+            <div class="emptyTile">20</div>
+            <div ng-repeat="mapTile in rawMap track by $index" class="tileItem" ng-click="pasteTile($index)">
+                <div class="tileBG tileItem {{mapTile[0]}}"></div>
+                <div class="tileMG tileItem {{mapTile[1]}}"></div>
+                <div class="tileFG tileItem {{mapTile[2]}}">
+                    <p><span ng-if="mapTile[3] == 'U'">U</span><span ng-if="mapTile[4] =='D'">D</span></p>
+
+                </div>
             </div>
-            <div>
-                <label>Hex Map Color</label>
-                <input type="text" ng-model="currentMap.mapColor">
-                <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{currentMap.mapColor}};"></div>
+            <div class="controlContainer">
+                <div id="mapControls">
+                    <button type="button" ng-click="toggleFGBG()">{{toggleTile}}</button>
+                    <button type="button" ng-click="compileMap()">Compile</button>
+                    <button type="button" ng-click="copyPassable()">Passable</button>
+                    <button type="button" ng-click="copyUnpassable()">Unpassable</button>
+                    <button type="button" ng-click="copyDoor()">Door</button>
+                    <button type="button" ng-click="eraseClass()">Erase</button>
+                    <button ng-click="undoMap()">Undo</button>
+                    <button ng-click="redoMap()">Redo</button>
+                    <button ng-click="bucketMap()">Bucket</button>
+                    <button ng-click="showCurrentMap()">Show Map</button>
+                </div>
+                <div>
+                    <label>Hex Map Color</label>
+                    <input type="text" ng-model="currentMap.mapColor">
+                    <div id="mapColor" style="width: 20px; height: 20px; border: 1px solid black; background: {{currentMap.mapColor}};"></div>
+                </div>
             </div>
         </div>
     </div>
+    
 </div>
 
 

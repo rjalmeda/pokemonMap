@@ -42,6 +42,15 @@
     left: 0px;
 }
 
+.emptyTile {
+    width: 32px;
+    height: 32px;
+    border:1px solid black;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
 #renderMap {
     display: grid;
     grid-gap: 0;
